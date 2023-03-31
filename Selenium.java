@@ -23,6 +23,7 @@ public class Selenium {
 
         driver.findElement(By.tagName("button")).click();
         Thread.sleep(10000);
+        System.out.println(driver.getTitle());
 
         driver.close();
     }
