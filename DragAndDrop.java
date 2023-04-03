@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
@@ -20,16 +18,21 @@ public class DragAndDrop {
         options.addArguments("--remote-allow-origins=*");
         WebDriver driver = new ChromeDriver(options);
         driver.manage().window().maximize();
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
 //        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebDriverWait wait=new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        Wait wait1=new FluentWait(driver).withTimeout(Duration.ofSeconds(20))
+                        .pollingEvery(Duration.ofSeconds(2))
+                        .ignoring(Exception.class);
         driver.get("http://www.dhtmlgoodies.com/submitted-scripts/i-google-like-drag-drop/index.html");
 
         //write xpath for Block 1
         String xp1 = "//h1[.='Block 1']";
-        WebElement block1 = wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(xp1))));
+        WebElement block1 = (WebElement) wait1.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(xp1))));
         //write xpath for Block 3
         String xp2 = "//h1[.='Block 3']";
-        WebElement block3 = driver.findElement(By.xpath(xp2));
+        WebElement block3 = wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(xp2))));
         //Create an object of Actions class and pass driver object as an argument
         Actions actions = new Actions(driver);
 
